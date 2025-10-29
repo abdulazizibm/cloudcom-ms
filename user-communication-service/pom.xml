@@ -28,6 +28,31 @@
 		</plugins>
 	</build>
 
+	<profiles>
+		<profile>
+			<id>dist</id>
+			<build>
+				<finalName>user-com-service-jar-with-dependencies</finalName>
+				<plugins>
+					<plugin>
+						<groupId>org.springframework.boot</groupId>
+						<artifactId>spring-boot-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<goals>
+									<goal>repackage</goal>
+								</goals>
+								<configuration>
+									<classifier>exec</classifier>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
 
 	<dependencies>
 		<dependency>
