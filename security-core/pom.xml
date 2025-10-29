@@ -11,6 +11,13 @@
 
   <artifactId>security-core</artifactId>
 
+  <properties>
+    <maven.compiler.source>21</maven.compiler.source>
+    <maven.compiler.target>21</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <jjwt.version>0.11.5</jjwt.version>
+  </properties>
+
   <build>
     <plugins>
       <plugin>
@@ -37,14 +44,15 @@
     <dependency>
       <groupId>io.jsonwebtoken</groupId>
       <artifactId>jjwt-api</artifactId>
-      <version>0.11.5</version>
+      <version>${jjwt.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.jsonwebtoken</groupId>
+      <artifactId>jjwt-jackson</artifactId> <!-- for JSON serialization -->
+      <version>${jjwt.version}</version>
+      <scope>runtime</scope>
     </dependency>
   </dependencies>
 
-  <properties>
-    <maven.compiler.source>21</maven.compiler.source>
-    <maven.compiler.target>21</maven.compiler.target>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
 
 </project>

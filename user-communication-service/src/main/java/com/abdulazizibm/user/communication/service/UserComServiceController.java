@@ -47,7 +47,7 @@ public class UserComServiceController {
   }
 
   @PostMapping("/login")
-  public ResponseEntity<String> login(LoginRequest request) {
+  public ResponseEntity<String> login(@RequestBody LoginRequest request) {
     val email = request.email();
     val rawPassword = request.password();
 

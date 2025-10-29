@@ -10,6 +10,10 @@
 
 	<artifactId>user-communication-service</artifactId>
 
+	<properties>
+		<jjwt.version>0.11.5</jjwt.version>
+	</properties>
+
 	<build>
 		<plugins>
 			<plugin>
@@ -80,9 +84,16 @@
 		</dependency>
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt-api</artifactId>
-			<version>0.11.5</version>
+			<artifactId>jjwt-impl</artifactId>
+			<version>${jjwt.version}</version>
+			<scope>runtime</scope>
 		</dependency>
+		<!--<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-jackson</artifactId> &lt;!&ndash; for JSON serialization &ndash;&gt;
+			<version>${jjwt.version}</version>
+			<scope>runtime</scope>
+		</dependency>-->
 		<dependency>
 			<groupId>com.abdulazizibm</groupId>
 			<artifactId>security-core</artifactId>
