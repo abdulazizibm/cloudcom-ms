@@ -12,6 +12,7 @@
   <modules>
     <module>user-communication-service</module>
     <module>security-core</module>
+    <module>product-service</module>
   </modules>
 
   <properties>
