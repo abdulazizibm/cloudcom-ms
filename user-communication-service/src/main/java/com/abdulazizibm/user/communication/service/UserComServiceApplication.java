@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class UserCommunicationServiceApplication {
+public class UserComServiceApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(UserCommunicationServiceApplication.class, args);
-	}
+  public static void main(String[] args) {
+    SpringApplication.run(UserComServiceApplication.class, args);
+  }
 
 }
