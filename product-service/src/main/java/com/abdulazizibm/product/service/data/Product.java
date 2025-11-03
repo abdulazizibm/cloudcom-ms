@@ -21,7 +21,7 @@ public class Product {
   private String name;
 
   @Column
-  private String category;
+  private int quantity;
 
   @Column
   private Double price;
