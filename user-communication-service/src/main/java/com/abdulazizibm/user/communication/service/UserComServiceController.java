@@ -65,7 +65,7 @@ public class UserComServiceController {
           .body(format("Incorrect password for user {0}", email));
 
     }
-    val userJwt = jwtService.generateToken(user.getEmail());
+    val userJwt = jwtService.generateToken(user.getEmail(), String.valueOf(user.getId()));
     return ResponseEntity.ok(userJwt);
 
 

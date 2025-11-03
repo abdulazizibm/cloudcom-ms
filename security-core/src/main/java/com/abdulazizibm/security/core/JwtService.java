@@ -24,12 +24,13 @@ public class JwtService {
         .getBody();
   }
 
-  public String generateToken(String userEmail) {
+  public String generateToken(String userEmail, String userId) {
     val now = new Date();
     val expiry = new Date(new Date().getTime() + 1000 * 60 * 60);
 
     return Jwts.builder()
         .setSubject(userEmail)
+        .setId(userId)
         .setIssuedAt(now)
         .setExpiration(expiry)
         .signWith(Keys.hmacShaKeyFor(secret.getBytes()), SignatureAlgorithm.HS256)
