@@ -1,12 +1,12 @@
 [
-  {"name": "iPhone 15 Pro", "category": "Electronics", "price": 999.99},
-  {"name": "Samsung Galaxy S24 Ultra", "category": "Electronics", "price": 1199.00},
-  {"name": "Google Pixel 9 Pro", "category": "Electronics", "price": 949.00},
-  {"name": "OnePlus 12", "category": "Electronics", "price": 799.99},
-  {"name": "Xiaomi 14 Pro", "category": "Electronics", "price": 899.50},
-  {"name": "Sony Xperia 1 VI", "category": "Electronics", "price": 1099.00},
-  {"name": "Motorola Edge 50", "category": "Electronics", "price": 699.00},
-  {"name": "Huawei P70 Pro", "category": "Electronics", "price": 999.00},
-  {"name": "Asus ROG Phone 8", "category": "Electronics", "price": 1099.99},
-  {"name": "Nothing Phone 2", "category": "Electronics", "price": 599.00}
+  {"name": "iPhone 15 Pro", "quantity": 100, "price": 999.99},
+  {"name": "Samsung Galaxy S24 Ultra", "quantity": 100, "price": 1199.00},
+  {"name": "Google Pixel 9 Pro", "quantity": 100, "price": 949.00},
+  {"name": "OnePlus 12", "quantity": 100, "price": 799.99},
+  {"name": "Xiaomi 14 Pro", "quantity": 100, "price": 899.50},
+  {"name": "Sony Xperia 1 VI", "quantity": 100, "price": 1099.00},
+  {"name": "Motorola Edge 50", "quantity": 100, "price": 699.00},
+  {"name": "Huawei P70 Pro", "quantity": 100, "price": 999.00},
+  {"name": "Asus ROG Phone 8", "quantity": 100, "price": 1099.99},
+  {"name": "Nothing Phone 2", "quantity": 100, "price": 599.00}
 ]

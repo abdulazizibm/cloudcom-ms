@@ -1,17 +1,18 @@
 package com.abdulazizibm.product.service;
 
-import static java.text.MessageFormat.format;
-
+import com.abdulazizibm.common.data.ProductDto;
+import com.abdulazizibm.common.data.ProductDtoIn;
 import com.abdulazizibm.product.service.data.Product;
 import com.abdulazizibm.product.service.data.ProductRepository;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,27 +25,46 @@ public class ProductServiceController {
   private final ProductRepository productRepository;
 
 
-  @GetMapping("/listAll")
-  public ResponseEntity<List<Product>> listProducts() {
+  @GetMapping("/getAll")
+  public ResponseEntity<List<ProductDto>> listProducts() {
     List<Product> products = productRepository.findAll();
-    return ResponseEntity.ok(products);
+    List<ProductDto> dtos = new ArrayList<>();
+
+    for(val product : products){
+      val dto = new ProductDto(product.getName(),product.getPrice());
+      dtos.add(dto);
+    }
+    return ResponseEntity.ok(dtos);
 
   }
-  @GetMapping("/list")
-  public ResponseEntity<JsonNode> listProduct(@RequestParam("name") String name) {
+  @GetMapping("/get")
+  public ResponseEntity<ProductDto> listProduct(@RequestParam("name") String name) {
     Optional<Product> productOptional = productRepository.findByName(name);
-    val jsonNode = JsonNodeFactory.instance.objectNode();
 
     if (productOptional.isEmpty()) {
-      jsonNode.put("message", format("Product with name {0} not found", name));
-      return ResponseEntity.status(404)
-          .body(jsonNode);
+      return ResponseEntity.notFound().build();
     }
+
     val product = productOptional.get();
-    jsonNode.put("name", product.getName());
-    jsonNode.put("category", product.getCategory());
-    jsonNode.put("price", product.getPrice());
-    return ResponseEntity.ok(jsonNode);
+    val dto = new ProductDto(product.getName(), product.getPrice());
+    return ResponseEntity.ok(dto);
+  }
+
+  @PutMapping("/s2s/get")
+  public List<ProductDto> getProducts(@RequestBody List<ProductDtoIn> productDtoIns){
+    val dtos = new ArrayList<ProductDto>();
+
+    for(val productName : productDtoIns) {
+      var optionalProduct = productRepository.findByName(productName.name());
+      if(optionalProduct.isEmpty()){
+        continue;
+      }
+      var product = optionalProduct.get();
+      var dto = new ProductDto(product.getName(), product.getPrice());
+      dtos.add(dto);
+    }
+    return dtos;
+
   }
 
 }
