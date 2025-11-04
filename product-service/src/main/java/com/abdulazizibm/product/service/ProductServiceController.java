@@ -1,6 +1,6 @@
 package com.abdulazizibm.product.service;
 
-import com.abdulazizibm.common.data.ProductDto;
+import com.abdulazizibm.common.data.ProductDtoOut;
 import com.abdulazizibm.common.data.ProductDtoIn;
 import com.abdulazizibm.product.service.data.Product;
 import com.abdulazizibm.product.service.data.ProductRepository;
@@ -26,19 +26,19 @@ public class ProductServiceController {
 
 
   @GetMapping("/getAll")
-  public ResponseEntity<List<ProductDto>> listProducts() {
+  public ResponseEntity<List<ProductDtoOut>> listProducts() {
     List<Product> products = productRepository.findAll();
-    List<ProductDto> dtos = new ArrayList<>();
+    List<ProductDtoOut> dtos = new ArrayList<>();
 
     for(val product : products){
-      val dto = new ProductDto(product.getName(),product.getPrice());
+      val dto = new ProductDtoOut(product.getName(),product.getPrice());
       dtos.add(dto);
     }
     return ResponseEntity.ok(dtos);
 
   }
   @GetMapping("/get")
-  public ResponseEntity<ProductDto> listProduct(@RequestParam("name") String name) {
+  public ResponseEntity<ProductDtoOut> listProduct(@RequestParam("name") String name) {
     Optional<Product> productOptional = productRepository.findByName(name);
 
     if (productOptional.isEmpty()) {
@@ -46,13 +46,13 @@ public class ProductServiceController {
     }
 
     val product = productOptional.get();
-    val dto = new ProductDto(product.getName(), product.getPrice());
+    val dto = new ProductDtoOut(product.getName(), product.getPrice());
     return ResponseEntity.ok(dto);
   }
 
   @PutMapping("/s2s/get")
-  public List<ProductDto> getProducts(@RequestBody List<ProductDtoIn> productDtoIns){
-    val dtos = new ArrayList<ProductDto>();
+  public List<ProductDtoOut> getProducts(@RequestBody List<ProductDtoIn> productDtoIns){
+    val dtos = new ArrayList<ProductDtoOut>();
 
     for(val productName : productDtoIns) {
       var optionalProduct = productRepository.findByName(productName.name());
@@ -60,7 +60,7 @@ public class ProductServiceController {
         continue;
       }
       var product = optionalProduct.get();
-      var dto = new ProductDto(product.getName(), product.getPrice());
+      var dto = new ProductDtoOut(product.getName(), product.getPrice());
       dtos.add(dto);
     }
     return dtos;
