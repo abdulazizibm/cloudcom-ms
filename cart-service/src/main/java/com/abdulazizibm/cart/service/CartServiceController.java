@@ -1,17 +1,20 @@
 package com.abdulazizibm.cart.service;
 
-import com.abdulazizibm.cart.service.data.CartProduct;
+import com.abdulazizibm.common.message.CartCheckedOutMessage;
+import com.abdulazizibm.common.data.Product;
 import com.abdulazizibm.cart.service.exception.CartNotFoundException;
 import com.abdulazizibm.cart.service.exception.ProductNotFoundException;
 import com.abdulazizibm.common.data.ProductDtoIn;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.time.Instant;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,7 +35,7 @@ public class CartServiceController {
         .getAuthentication();
     val userEmail = auth.getName();
 
-    List<CartProduct> cartProducts;
+    List<Product> cartProducts;
     try {
       cartProducts = cartService.get(userEmail);
     } catch (CartNotFoundException e) {
@@ -64,11 +67,34 @@ public class CartServiceController {
     String result;
     try {
       result = cartService.remove(name, userEmail);
-    }
-    catch(CartNotFoundException | ProductNotFoundException e){
-      return ResponseEntity.status(404).body(e.getMessage());
+    } catch (CartNotFoundException | ProductNotFoundException e) {
+      return ResponseEntity.status(404)
+          .body(e.getMessage());
     }
     return ResponseEntity.ok(result);
+
+  }
+
+  @PostMapping("/checkout")
+  public ResponseEntity<String> checkOut() {
+    val auth = SecurityContextHolder.getContext()
+        .getAuthentication();
+    val userEmail = auth.getName();
+
+    val products = cartService.get(userEmail);
+    val totalPrice = products.stream()
+        .map(Product::getPrice)
+        .reduce(0.0, Double::sum);
+
+    val message = CartCheckedOutMessage.builder()
+        .userEmail(userEmail)
+        .products(products)
+        .totalPrice(totalPrice)
+        .timestamp(Instant.now())
+        .build();
+
+    cartService.publishToSqsQueue(message);
+    return ResponseEntity.ok("Cart successfully checked out");
 
   }
 

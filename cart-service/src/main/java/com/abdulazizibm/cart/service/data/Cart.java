@@ -1,5 +1,6 @@
 package com.abdulazizibm.cart.service.data;
 
+import com.abdulazizibm.common.data.Product;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
@@ -29,6 +30,6 @@ public class Cart {
   private String userEmail;
 
   @ElementCollection
-  private List<CartProduct> products;
+  private List<Product> products;
 
 }
