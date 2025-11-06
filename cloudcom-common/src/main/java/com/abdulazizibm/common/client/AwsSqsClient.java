@@ -1,4 +1,4 @@
-package com.abdulazizibm.cart.service.client;
+package com.abdulazizibm.common.client;
 
 import java.net.URI;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,9 +12,12 @@ import software.amazon.awssdk.services.sqs.SqsClient;
 
 @Configuration
 public class AwsSqsClient {
+
   @Bean
-  public SqsClient sqsClient(@Value("${aws.region}") String region, @Value("${aws.endpoint}") String endpoint){
-    var builder = SqsClient.builder().region(Region.of(region));
+  public SqsClient sqsClient(@Value("${aws.region}") String region,
+      @Value("${aws.endpoint}") String endpoint) {
+    var builder = SqsClient.builder()
+        .region(Region.of(region));
 
     if (!endpoint.isBlank()) {
       // LocalStack
@@ -25,7 +28,8 @@ public class AwsSqsClient {
                   StaticCredentialsProvider.create(AwsBasicCredentials.create("test", "test")));
     } else {
       // real AWS Cloud
-      builder = builder.credentialsProvider(DefaultCredentialsProvider.builder().build());
+      builder = builder.credentialsProvider(DefaultCredentialsProvider.builder()
+          .build());
     }
     return builder.build();
 
