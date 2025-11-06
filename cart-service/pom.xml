@@ -89,7 +89,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.abdulazizibm</groupId>
-			<artifactId>common-data</artifactId>
+			<artifactId>cloudcom-common</artifactId>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
 	</dependencies>

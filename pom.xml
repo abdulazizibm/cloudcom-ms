@@ -14,7 +14,8 @@
     <module>security-core</module>
     <module>product-service</module>
     <module>cart-service</module>
-    <module>common-data</module>
+    <module>cloudcom-common</module>
+    <module>order-service</module>
   </modules>
 
   <properties>
