@@ -2,7 +2,7 @@ package com.abdulazizibm.product.service;
 
 import com.abdulazizibm.common.data.ProductDtoOut;
 import com.abdulazizibm.common.data.ProductDtoIn;
-import com.abdulazizibm.product.service.data.Product;
+import com.abdulazizibm.product.service.data.ProductEntity;
 import com.abdulazizibm.product.service.data.ProductRepository;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +27,7 @@ public class ProductServiceController {
 
   @GetMapping("/getAll")
   public ResponseEntity<List<ProductDtoOut>> listProducts() {
-    List<Product> products = productRepository.findAll();
+    List<ProductEntity> products = productRepository.findAll();
     List<ProductDtoOut> dtos = new ArrayList<>();
 
     for(val product : products){
@@ -39,7 +39,7 @@ public class ProductServiceController {
   }
   @GetMapping("/get")
   public ResponseEntity<ProductDtoOut> listProduct(@RequestParam("name") String name) {
-    Optional<Product> productOptional = productRepository.findByName(name);
+    Optional<ProductEntity> productOptional = productRepository.findByName(name);
 
     if (productOptional.isEmpty()) {
       return ResponseEntity.notFound().build();

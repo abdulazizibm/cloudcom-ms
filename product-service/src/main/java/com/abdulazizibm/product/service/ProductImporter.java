@@ -1,6 +1,6 @@
 package com.abdulazizibm.product.service;
 
-import com.abdulazizibm.product.service.data.Product;
+import com.abdulazizibm.product.service.data.ProductEntity;
 import com.abdulazizibm.product.service.data.ProductRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -36,7 +36,7 @@ public class ProductImporter implements CommandLineRunner {
 
     ObjectMapper objectMapper = new ObjectMapper();
 
-    List<Product> products = objectMapper.readValue(inputStream,
+    List<ProductEntity> products = objectMapper.readValue(inputStream,
         new TypeReference<>() {
         });
 
