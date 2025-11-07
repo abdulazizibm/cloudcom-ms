@@ -41,6 +41,19 @@ services:
       PRODUCT_SERVICE_URL: ${PRODUCT_SERVICE_URL}
     ports:
       - 8082:8080
+  order-service:
+      image: order-service-image:latest
+      container_name: order-service
+      depends_on:
+        - postgres
+        - localstack
+      environment:
+        SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${DB_NAME}
+        SPRING_DATASOURCE_USERNAME: ${DB_USER}
+        SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+        JWT_SECRET: ${JWT_SECRET}
+      ports:
+        - 8083:8080
 
   postgres:
     image: postgres:16
