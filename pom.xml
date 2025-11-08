@@ -16,6 +16,7 @@
     <module>cart-service</module>
     <module>cloudcom-common</module>
     <module>order-service</module>
+    <module>payment-service</module>
   </modules>
 
   <properties>
