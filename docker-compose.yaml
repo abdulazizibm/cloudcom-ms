@@ -54,6 +54,20 @@ services:
         JWT_SECRET: ${JWT_SECRET}
       ports:
         - 8083:8080
+  payment-service:
+    image: payment-service-image:latest
+    container_name: payment-service
+    depends_on:
+      - postgres
+      - localstack
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${DB_NAME}
+      SPRING_DATASOURCE_USERNAME: ${DB_USER}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      ORDER_SERVICE_URL: ${ORDER_SERVICE_URL}
+    ports:
+      - 8084:8080
 
   postgres:
     image: postgres:16
