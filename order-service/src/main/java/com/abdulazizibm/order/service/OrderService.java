@@ -4,10 +4,11 @@ import static java.text.MessageFormat.format;
 
 import com.abdulazizibm.common.message.CartCheckedOutMessage;
 import com.abdulazizibm.common.data.Product;
-import com.abdulazizibm.common.message.OrderCreated;
+import com.abdulazizibm.common.message.OrderCreatedMessage;
 import com.abdulazizibm.order.service.data.Order;
 import com.abdulazizibm.order.service.data.OrderRepository;
 import com.abdulazizibm.order.service.data.OrderStatus;
+import com.abdulazizibm.order.service.exception.OrderNotFoundException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
@@ -107,9 +108,10 @@ public class OrderService {
         sqsClient.deleteMessage(r -> r.queueUrl(cartQueueUrl)
             .receiptHandle(msg.receiptHandle()));
 
-        val orderCreatedMessage = OrderCreated.builder()
+        val orderCreatedMessage = OrderCreatedMessage.builder()
             .id(order.getId())
             .totalPrice(totalPrice)
+            .userEmail(userEmail)
             .build();
 
         publishOrderCreated(orderCreatedMessage);
@@ -121,7 +123,7 @@ public class OrderService {
     }
   }
 
-  private void publishOrderCreated(OrderCreated message) {
+  private void publishOrderCreated(OrderCreatedMessage message) {
     try {
       String msg = objectMapper.writeValueAsString(message);
 
@@ -135,6 +137,18 @@ public class OrderService {
     } catch (JsonProcessingException e) {
       throw new RuntimeException("Failed to send SQS message", e);
     }
+  }
+
+  public void confirmPayment(String userEmail){
+    var orderOptional = orderRepository.findByUserEmail(userEmail);
+
+    if(orderOptional.isEmpty()){
+      throw new OrderNotFoundException(userEmail);
+    }
+    var order = orderOptional.get();
+    order.setStatus(OrderStatus.PAID);
+    log.info("Set order status to PAID");
+    orderRepository.save(order);
   }
 
 
