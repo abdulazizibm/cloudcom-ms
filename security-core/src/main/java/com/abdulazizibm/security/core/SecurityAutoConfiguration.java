@@ -29,7 +29,7 @@ public class SecurityAutoConfiguration {
             .requestMatchers("/auth/**")
             .permitAll()
             .requestMatchers("/product/**").permitAll()
-            .requestMatchers("/product/s2s/get")
+            .requestMatchers("/order/confirm")
             .permitAll()
             .anyRequest()
             .authenticated())
