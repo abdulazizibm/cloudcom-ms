@@ -83,20 +83,13 @@
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
-			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt-impl</artifactId>
-			<version>${jjwt.version}</version>
-			<scope>runtime</scope>
-		</dependency>
-		<!--<dependency>
-			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt-jackson</artifactId> &lt;!&ndash; for JSON serialization &ndash;&gt;
-			<version>${jjwt.version}</version>
-			<scope>runtime</scope>
-		</dependency>-->
-		<dependency>
 			<groupId>com.abdulazizibm</groupId>
 			<artifactId>security-core</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.abdulazizibm</groupId>
+			<artifactId>cloudcom-common</artifactId>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
