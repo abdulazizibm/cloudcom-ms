@@ -2,13 +2,9 @@ package com.abdulazizibm.product.service;
 
 import com.abdulazizibm.common.data.ProductDtoOut;
 import com.abdulazizibm.common.data.ProductDtoIn;
-import com.abdulazizibm.product.service.data.ProductEntity;
-import com.abdulazizibm.product.service.data.ProductRepository;
-import java.util.ArrayList;
+import com.abdulazizibm.product.service.exception.ProductDoesNotExistException;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import lombok.val;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -22,48 +18,27 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/product")
 public class ProductServiceController {
 
-  private final ProductRepository productRepository;
-
+  private final ProductService productService;
 
   @GetMapping("/getAll")
   public ResponseEntity<List<ProductDtoOut>> listProducts() {
-    List<ProductEntity> products = productRepository.findAll();
-    List<ProductDtoOut> dtos = new ArrayList<>();
-
-    for(val product : products){
-      val dto = new ProductDtoOut(product.getName(),product.getPrice());
-      dtos.add(dto);
-    }
-    return ResponseEntity.ok(dtos);
+    var products = productService.getAll();
+    return ResponseEntity.ok(products);
 
   }
   @GetMapping("/get")
-  public ResponseEntity<ProductDtoOut> listProduct(@RequestParam("name") String name) {
-    Optional<ProductEntity> productOptional = productRepository.findByName(name);
-
-    if (productOptional.isEmpty()) {
+  public ResponseEntity<ProductDtoOut> listProduct(@RequestParam("name") String productName) {
+    try{
+      var productDto = productService.getProduct(productName);
+      return ResponseEntity.ok(productDto);
+    } catch(ProductDoesNotExistException e){
       return ResponseEntity.notFound().build();
     }
-
-    val product = productOptional.get();
-    val dto = new ProductDtoOut(product.getName(), product.getPrice());
-    return ResponseEntity.ok(dto);
   }
 
   @PutMapping("/s2s/get")
-  public List<ProductDtoOut> getProducts(@RequestBody List<ProductDtoIn> productDtoIns){
-    val dtos = new ArrayList<ProductDtoOut>();
-
-    for(val productName : productDtoIns) {
-      var optionalProduct = productRepository.findByName(productName.name());
-      if(optionalProduct.isEmpty()){
-        continue;
-      }
-      var product = optionalProduct.get();
-      var dto = new ProductDtoOut(product.getName(), product.getPrice());
-      dtos.add(dto);
-    }
-    return dtos;
+  public List<ProductDtoOut> getProducts(@RequestBody List<ProductDtoIn> productDtos){
+    return productService.getProducts(productDtos);
 
   }
 
