@@ -1,13 +1,11 @@
 package com.abdulazizibm.cart.service;
 
-import com.abdulazizibm.common.message.CartCheckedOutMessage;
 import com.abdulazizibm.common.data.Product;
 import com.abdulazizibm.cart.service.exception.CartNotFoundException;
 import com.abdulazizibm.cart.service.exception.ProductNotFoundException;
 import com.abdulazizibm.common.data.ProductDtoIn;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.time.Instant;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
@@ -77,23 +75,11 @@ public class CartServiceController {
 
   @PostMapping("/checkout")
   public ResponseEntity<String> checkOut() {
-    val auth = SecurityContextHolder.getContext()
-        .getAuthentication();
+    val auth = SecurityContextHolder.getContext().getAuthentication();
     val userEmail = auth.getName();
+    var checkedOutProducts = cartService.checkOut(userEmail);
 
-    val products = cartService.get(userEmail);
-    val totalPrice = products.stream()
-        .map(Product::getPrice)
-        .reduce(0.0, Double::sum);
-
-    val message = CartCheckedOutMessage.builder()
-        .userEmail(userEmail)
-        .products(products)
-        .totalPrice(totalPrice)
-        .timestamp(Instant.now())
-        .build();
-
-    cartService.publishToSqsQueue(message);
+    cartService.removeProducts(checkedOutProducts, userEmail);
     return ResponseEntity.ok("Cart successfully checked out");
 
   }

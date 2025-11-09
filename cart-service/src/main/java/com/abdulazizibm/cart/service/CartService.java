@@ -15,6 +15,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -124,6 +125,35 @@ public class CartService {
     }
     cartRepository.save(cart);
     return "Product successfully removed from cart";
+  }
+
+  @Transactional
+  protected void removeProducts(List<Product> products, String userEmail){
+    var cartOptional = cartRepository.findByUserEmail(userEmail);
+
+    if (cartOptional.isEmpty()) {
+      throw new CartNotFoundException(userEmail);
+    }
+    var cart = cartOptional.get();
+    var cartProducts = cart.getProducts();
+    cartProducts.removeAll(products);
+  }
+
+  protected List<Product> checkOut(String userEmail){
+    val products = get(userEmail);
+
+    val totalPrice = products.stream()
+        .map(p -> p.getPrice() * p.getQuantity())
+        .reduce(0.0, Double::sum);
+
+    val message = CartCheckedOutMessage.builder()
+        .userEmail(userEmail)
+        .products(products)
+        .totalPrice(totalPrice)
+        .timestamp(Instant.now())
+        .build();
+    publishToSqsQueue(message);
+    return products;
   }
 
   public void publishToSqsQueue(CartCheckedOutMessage message) {
