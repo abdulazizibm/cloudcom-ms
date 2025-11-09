@@ -1,73 +1,108 @@
 package com.abdulazizibm.user.communication.service;
 
+
 import static java.text.MessageFormat.format;
 
-import com.abdulazizibm.security.core.JwtService;
-import com.abdulazizibm.user.communication.service.data.User;
-import com.abdulazizibm.user.communication.service.data.UserRepository;
+import com.abdulazizibm.common.message.OrderCreatedMessage;
 import com.abdulazizibm.user.communication.service.dto.LoginRequest;
 import com.abdulazizibm.user.communication.service.dto.RegisterRequest;
+import com.abdulazizibm.user.communication.service.exception.IncorrectPasswordException;
+import com.abdulazizibm.user.communication.service.exception.UserAlreadyExistsException;
+import com.abdulazizibm.user.communication.service.exception.UserNotFoundException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import software.amazon.awssdk.services.sqs.SqsClient;
+import software.amazon.awssdk.services.sqs.model.CreateQueueRequest;
+import software.amazon.awssdk.services.sqs.model.GetQueueUrlRequest;
+import software.amazon.awssdk.services.sqs.model.QueueDoesNotExistException;
 
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/auth")
 public class UserComServiceController {
 
-  private final UserRepository userRepository;
-  private final PasswordEncoder encoder = new BCryptPasswordEncoder();
-  private final JwtService jwtService;
+  private final UserComService userComService;
+  private final SqsClient sqsClient;
+  private final ObjectMapper objectMapper;
+
+  @Value("${aws.sqs.payment.queue.name}")
+  private String paymentQueue;
+  private String paymentQueueUrl;
+
+  @PostConstruct
+  void init() {
+    try {
+      paymentQueueUrl = sqsClient.getQueueUrl(GetQueueUrlRequest.builder()
+              .queueName(paymentQueue)
+              .build())
+          .queueUrl();
+    } catch (QueueDoesNotExistException e) {
+      val queue = sqsClient.createQueue(CreateQueueRequest.builder()
+          .queueName(paymentQueue)
+          .build());
+      paymentQueueUrl = queue.queueUrl();
+    }
+  }
+
+  @Scheduled(fixedDelay = 2000)
+  private void pollQueue() {
+    log.info("Polling SQS for messages...");
+    var messages = sqsClient.receiveMessage(r -> r
+            .queueUrl(paymentQueueUrl)
+            .maxNumberOfMessages(5)
+            .waitTimeSeconds(5))
+            .messages();
+
+    for (var msg : messages) {
+      try {
+        var orderCreatedMessage = objectMapper.readValue(msg.body(), OrderCreatedMessage.class);
+        log.info(format("Successfully received PaymentDone message"));
+        var userEmail = orderCreatedMessage.getUserEmail();
+        log.info(format("Sending confirmation email to {0}", userEmail));
+
+      } catch (JsonProcessingException e) {
+        throw new RuntimeException("Failed to parse JSON", e);
+      }
+    }
+  }
 
   @PostMapping("/register")
   public ResponseEntity<String> register(@RequestBody RegisterRequest request) {
-    val email = request.email();
-    val password = request.password();
+    try {
+      val response = userComService.register(request);
+      return ResponseEntity.ok(response);
 
-    val userOptional = userRepository.findByEmail(email);
-
-    if (userOptional.isPresent()) {
-      return ResponseEntity.status(400)
-          .body(format("User with e-mail {0} is already registered", email));
+    } catch (UserAlreadyExistsException e) {
+      return ResponseEntity.badRequest()
+          .body(e.getMessage());
     }
-
-    val user = User.builder()
-        .email(email)
-        .password(encoder.encode(password))
-        .build();
-    userRepository.save(user);
-    return ResponseEntity.ok(format("User with e-mail {0} was successfully registered", email));
   }
 
   @PostMapping("/login")
   public ResponseEntity<String> login(@RequestBody LoginRequest request) {
-    val email = request.email();
-    val rawPassword = request.password();
+    try {
+      val jwtToken = userComService.login(request);
+      return ResponseEntity.ok(jwtToken);
 
-    val userOptional = userRepository.findByEmail(email);
-
-    if (userOptional.isEmpty()) {
+    } catch (UserNotFoundException e) {
       return ResponseEntity.status(404)
-          .body(format("User with e-mail {0} not found", email));
-    }
-    val user = userOptional.get();
-    val encodedPassword = user.getPassword();
-
-    if (!encoder.matches(rawPassword, encodedPassword)) {
+          .body(e.getMessage());
+    } catch (IncorrectPasswordException e) {
       return ResponseEntity.status(401)
-          .body(format("Incorrect password for user {0}", email));
-
+          .body(e.getMessage());
     }
-    val userJwt = jwtService.generateToken(user.getEmail(), String.valueOf(user.getId()));
-    return ResponseEntity.ok(userJwt);
-
 
   }
 
