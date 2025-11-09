@@ -140,7 +140,7 @@ public class OrderService {
   }
 
   public void confirmPayment(String userEmail){
-    var orderOptional = orderRepository.findByUserEmail(userEmail);
+    var orderOptional = orderRepository.findByUserEmailAndStatus(userEmail, OrderStatus.PENDING);
 
     if(orderOptional.isEmpty()){
       throw new OrderNotFoundException(userEmail);
