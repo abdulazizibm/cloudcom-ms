@@ -42,7 +42,8 @@ jobs:
 
     - name: Build and push all Docker images
       run: |
-        docker compose build
-        docker compose push    
+        SERVICES="user-communication-service product-service cart-service order-service payment-service"
+        docker compose build $SERVICES
+        docker compose push $SERVICES
 
     

@@ -1,7 +1,7 @@
 services:
   user-communication-service:
     build: ./user-communication-service
-    image: user-com-service-image:latest
+    image: abdulazizibm/cloudcom-ms-repo:user-com-service-image
     container_name: user-com-service
     depends_on:
       - postgres
@@ -16,7 +16,7 @@ services:
 
   product-service:
     build: ./product-service
-    image: product-service-image:latest
+    image: abdulazizibm/cloudcom-ms-repo:product-service-image
     container_name: product-service
     depends_on:
       - postgres
@@ -30,7 +30,7 @@ services:
       - 8081:8080
   cart-service:
     build: ./cart-service
-    image: cart-service-image:latest
+    image: abdulazizibm/cloudcom-ms-repo:cart-service-image
     container_name: cart-service
     depends_on:
       - postgres
@@ -45,7 +45,7 @@ services:
       - 8082:8080
   order-service:
     build: ./order-service
-    image: order-service-image:latest
+    image: abdulazizibm/cloudcom-ms-repo:order-service-image
     container_name: order-service
     depends_on:
         - postgres
@@ -59,7 +59,7 @@ services:
       - 8083:8080
   payment-service:
     build: ./payment-service
-    image: payment-service-image:latest
+    image: abdulazizibm/cloudcom-ms-repo:payment-service-image
     container_name: payment-service
     depends_on:
       - postgres
