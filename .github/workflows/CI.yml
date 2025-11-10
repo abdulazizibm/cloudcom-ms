@@ -37,7 +37,7 @@ jobs:
          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
          echo "ORDER_SERVICE_URL=${{ secrets.ORDER_SERVICE_URL }}" >> .env
-         echo "PRODUCT_SERVICE_URL=${{ secrets.PRODUCT_SERVICE_URL }} >> .env
+         echo "PRODUCT_SERVICE_URL=${{ secrets.PRODUCT_SERVICE_URL }}" >> .env
 
 
     - name: Build and push all Docker images
