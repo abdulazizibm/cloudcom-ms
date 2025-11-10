@@ -1,6 +1,6 @@
 services:
-
   user-communication-service:
+    build: ./user-communication-service
     image: user-com-service-image:latest
     container_name: user-com-service
     depends_on:
@@ -15,6 +15,7 @@ services:
       - 8080:8080
 
   product-service:
+    build: ./product-service
     image: product-service-image:latest
     container_name: product-service
     depends_on:
@@ -28,6 +29,7 @@ services:
     ports:
       - 8081:8080
   cart-service:
+    build: ./cart-service
     image: cart-service-image:latest
     container_name: cart-service
     depends_on:
@@ -42,19 +44,21 @@ services:
     ports:
       - 8082:8080
   order-service:
-      image: order-service-image:latest
-      container_name: order-service
-      depends_on:
+    build: ./order-service
+    image: order-service-image:latest
+    container_name: order-service
+    depends_on:
         - postgres
         - localstack
-      environment:
-        SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${DB_NAME}
-        SPRING_DATASOURCE_USERNAME: ${DB_USER}
-        SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
-        JWT_SECRET: ${JWT_SECRET}
-      ports:
-        - 8083:8080
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${DB_NAME}
+      SPRING_DATASOURCE_USERNAME: ${DB_USER}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+    ports:
+      - 8083:8080
   payment-service:
+    build: ./payment-service
     image: payment-service-image:latest
     container_name: payment-service
     depends_on:
