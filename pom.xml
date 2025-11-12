@@ -17,6 +17,7 @@
     <module>cloudcom-common</module>
     <module>order-service</module>
     <module>payment-service</module>
+    <module>gateway</module>
   </modules>
 
   <properties>
@@ -54,10 +55,6 @@
   </dependencyManagement>
   <dependencies>
 
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-security</artifactId>
-    </dependency>
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
