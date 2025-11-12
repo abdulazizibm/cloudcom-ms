@@ -1,8 +1,23 @@
 services:
+  gateway:
+    build: ./gateway
+    image: abdulazizibm/ecr:gateway-service-image
+    container_name: gateway-service
+    restart: unless-stopped
+    depends_on:
+      - user-communication-service
+      - order-service
+      - product-service
+      - cart-service
+      - payment-service
+    ports:
+      - 80:8080
+
   user-communication-service:
     build: ./user-communication-service
-    image: abdulazizibm/cloudcom-ms-repo:user-com-service-image
-    container_name: user-com-service
+    image: abdulazizibm/ecr:user-com-service-image
+    container_name: user-communication-service
+    restart: unless-stopped
     depends_on:
       - postgres
       - localstack
@@ -11,13 +26,14 @@ services:
       SPRING_DATASOURCE_USERNAME: ${DB_USER}
       SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
       JWT_SECRET: ${JWT_SECRET}
-    ports:
-      - 8080:8080
+    expose:
+      - 8081
 
   product-service:
     build: ./product-service
-    image: abdulazizibm/cloudcom-ms-repo:product-service-image
+    image: abdulazizibm/ecr:product-service-image
     container_name: product-service
+    restart: unless-stopped
     depends_on:
       - postgres
       - localstack
@@ -26,12 +42,13 @@ services:
       SPRING_DATASOURCE_USERNAME: ${DB_USER}
       SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
       JWT_SECRET: ${JWT_SECRET}
-    ports:
-      - 8081:8080
+    expose:
+      - 8082
   cart-service:
     build: ./cart-service
-    image: abdulazizibm/cloudcom-ms-repo:cart-service-image
+    image: abdulazizibm/ecr:cart-service-image
     container_name: cart-service
+    restart: unless-stopped
     depends_on:
       - postgres
       - localstack
@@ -41,12 +58,13 @@ services:
       SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
       JWT_SECRET: ${JWT_SECRET}
       PRODUCT_SERVICE_URL: ${PRODUCT_SERVICE_URL}
-    ports:
-      - 8082:8080
+    expose:
+      - 8083
   order-service:
     build: ./order-service
-    image: abdulazizibm/cloudcom-ms-repo:order-service-image
+    image: abdulazizibm/ecr:order-service-image
     container_name: order-service
+    restart: unless-stopped
     depends_on:
         - postgres
         - localstack
@@ -55,12 +73,13 @@ services:
       SPRING_DATASOURCE_USERNAME: ${DB_USER}
       SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
       JWT_SECRET: ${JWT_SECRET}
-    ports:
-      - 8083:8080
+    expose:
+      - 8084
   payment-service:
     build: ./payment-service
-    image: abdulazizibm/cloudcom-ms-repo:payment-service-image
+    image: abdulazizibm/ecr:payment-service-image
     container_name: payment-service
+    restart: unless-stopped
     depends_on:
       - postgres
       - localstack
@@ -70,12 +89,13 @@ services:
       SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
       JWT_SECRET: ${JWT_SECRET}
       ORDER_SERVICE_URL: ${ORDER_SERVICE_URL}
-    ports:
-      - 8084:8080
+    expose:
+      - 8085
 
   postgres:
     image: postgres:16
     container_name: postgres_db
+    restart: unless-stopped
     environment:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
@@ -88,6 +108,7 @@ services:
   localstack:
     image: localstack/localstack:latest
     container_name: localstack
+    restart: unless-stopped
     environment:
       - SERVICES=sqs,sns
       - AWS_ACCESS_KEY_ID=test
