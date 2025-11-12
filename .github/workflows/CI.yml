@@ -52,7 +52,7 @@ jobs:
         REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         REPOSITORY: abdulazizibm/ecr
       run: |
-        SERVICES="user-communication-service product-service cart-service order-service payment-service"
+        SERVICES="gateway-service user-communication-service product-service cart-service order-service payment-service"
         docker compose build $SERVICES
         docker compose push $SERVICES
 

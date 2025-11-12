@@ -1,7 +1,8 @@
 services:
-  gateway:
-    build: ./gateway
+  gateway-service:
+    build: ./spring-gateway
     image: ${REGISTRY}/${REPOSITORY}:gateway-service-image
+    #image: gateway-service-image
     container_name: gateway-service
     restart: unless-stopped
     depends_on:
@@ -14,8 +15,9 @@ services:
       - 80:8080
 
   user-communication-service:
-    build: ./user-communication-service
+    build: ./spring-microservices/user-communication-service
     image: ${REGISTRY}/${REPOSITORY}:user-com-service-image
+    #image: user-com-service-image
     container_name: user-communication-service
     restart: unless-stopped
     depends_on:
@@ -30,8 +32,9 @@ services:
       - 8081
 
   product-service:
-    build: ./product-service
+    build: ./spring-microservices/product-service
     image: ${REGISTRY}/${REPOSITORY}:product-service-image
+    #image: product-service-image
     container_name: product-service
     restart: unless-stopped
     depends_on:
@@ -45,8 +48,9 @@ services:
     expose:
       - 8082
   cart-service:
-    build: ./cart-service
+    build: ./spring-microservices/cart-service
     image: ${REGISTRY}/${REPOSITORY}:cart-service-image
+    #image: cart-service-image
     container_name: cart-service
     restart: unless-stopped
     depends_on:
@@ -61,8 +65,9 @@ services:
     expose:
       - 8083
   order-service:
-    build: ./order-service
+    build: ./spring-microservices/order-service
     image: ${REGISTRY}/${REPOSITORY}:order-service-image
+    #image: order-service-image
     container_name: order-service
     restart: unless-stopped
     depends_on:
@@ -76,8 +81,9 @@ services:
     expose:
       - 8084
   payment-service:
-    build: ./payment-service
+    build: ./spring-microservices/payment-service
     image: ${REGISTRY}/${REPOSITORY}:payment-service-image
+    #image: payment-service-image
     container_name: payment-service
     restart: unless-stopped
     depends_on:
