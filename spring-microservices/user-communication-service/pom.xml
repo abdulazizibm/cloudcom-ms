@@ -4,11 +4,15 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.abdulazizibm</groupId>
-		<artifactId>cloudcom-microservices-platform</artifactId>
+		<artifactId>spring-microservices</artifactId>
 		<version>1.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>cart-service</artifactId>
+	<artifactId>user-communication-service</artifactId>
+
+	<properties>
+		<jjwt.version>0.11.5</jjwt.version>
+	</properties>
 
 	<build>
 		<plugins>
@@ -32,7 +36,7 @@
 		<profile>
 			<id>dist</id>
 			<build>
-				<finalName>cart-service-jar-with-dependencies</finalName>
+				<finalName>user-com-service-jar-with-dependencies</finalName>
 				<plugins>
 					<plugin>
 						<groupId>org.springframework.boot</groupId>
@@ -53,6 +57,7 @@
 		</profile>
 	</profiles>
 
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -63,28 +68,23 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-openfeign</artifactId>
-			<version>4.3.0</version>
+			<artifactId>spring-cloud-starter-aws-messaging</artifactId>
+			<version>2.2.6.RELEASE</version>
 		</dependency>
 		<dependency>
-			<groupId>software.amazon.awssdk</groupId>
-			<artifactId>sqs</artifactId>
-			<version>2.35.10</version>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.abdulazizibm</groupId>
-			<artifactId>security-core</artifactId>
+			<artifactId>spring-security</artifactId>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
@@ -93,7 +93,6 @@
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
-
 
 
 </project>

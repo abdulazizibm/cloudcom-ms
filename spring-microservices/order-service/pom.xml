@@ -4,10 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.abdulazizibm</groupId>
-		<artifactId>cloudcom-microservices-platform</artifactId>
+		<artifactId>spring-microservices</artifactId>
 		<version>1.0-SNAPSHOT</version>
 	</parent>
-	<artifactId>payment-service</artifactId>
+
+	<artifactId>order-service</artifactId>
 
 	<build>
 		<plugins>
@@ -31,7 +32,7 @@
 		<profile>
 			<id>dist</id>
 			<build>
-				<finalName>payment-service-jar-with-dependencies</finalName>
+				<finalName>order-service-jar-with-dependencies</finalName>
 				<plugins>
 					<plugin>
 						<groupId>org.springframework.boot</groupId>
@@ -52,6 +53,7 @@
 		</profile>
 	</profiles>
 
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -61,10 +63,16 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -72,24 +80,19 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-openfeign</artifactId>
-			<version>4.3.0</version>
+			<groupId>software.amazon.awssdk</groupId>
+			<artifactId>sqs</artifactId>
+			<version>2.35.10</version>
+		</dependency>
+		<dependency>
+			<groupId>com.abdulazizibm</groupId>
+			<artifactId>spring-security</artifactId>
+			<version>1.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.abdulazizibm</groupId>
 			<artifactId>cloudcom-common</artifactId>
 			<version>1.0-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>com.abdulazizibm</groupId>
-			<artifactId>security-core</artifactId>
-			<version>1.0-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>software.amazon.awssdk</groupId>
-			<artifactId>sqs</artifactId>
-			<version>2.35.10</version>
 		</dependency>
 	</dependencies>
 

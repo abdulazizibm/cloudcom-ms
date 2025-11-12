@@ -10,14 +10,10 @@
   <packaging>pom</packaging>
 
   <modules>
-    <module>user-communication-service</module>
-    <module>security-core</module>
-    <module>product-service</module>
-    <module>cart-service</module>
+    <module>spring-security</module>
     <module>cloudcom-common</module>
-    <module>order-service</module>
-    <module>payment-service</module>
-    <module>gateway</module>
+    <module>spring-gateway</module>
+    <module>spring-microservices</module>
   </modules>
 
   <properties>
