@@ -33,8 +33,8 @@ services:
 
   product-service:
     build: ./spring-microservices/product-service
-    #image: ${REGISTRY}/${REPOSITORY}:product-service-image
-    image: product-service-image
+    image: ${REGISTRY}/${REPOSITORY}:product-service-image
+    #image: product-service-image
     container_name: product-service
     restart: unless-stopped
     depends_on:
