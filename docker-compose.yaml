@@ -97,33 +97,34 @@ services:
       ORDER_SERVICE_URL: ${ORDER_SERVICE_URL}
     expose:
       - 8085
+  ### For local development
+  #postgres:
+   # image: postgres:16
+    #container_name: postgres_db
+    #restart: unless-stopped
+    #environment:
+     #  POSTGRES_USER: ${DB_USER}
+     # POSTGRES_PASSWORD: ${DB_PASSWORD}
+     #POSTGRES_DB: ${DB_NAME}
+    #volumes:
+     # - postgres_data:/var/lib/postgresql/data
+    #ports:
+     # - 5433:5432
 
-  postgres:
-    image: postgres:16
-    container_name: postgres_db
-    restart: unless-stopped
-    environment:
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_NAME}
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    ports:
-      - 5433:5432
-
-  localstack:
-    image: localstack/localstack:latest
-    container_name: localstack
-    restart: unless-stopped
-    environment:
-      - SERVICES=sqs,sns
-      - AWS_ACCESS_KEY_ID=test
-      - AWS_SECRET_ACCESS_KEY=test
-    ports:
-      - 4566:4566
-    volumes:
-      - localstack_data:/var/lib/localstack
-volumes:
-  postgres_data:
-  localstack_data:
+  ### For local dev
+  #localstack:
+   # image: localstack/localstack:latest
+    #container_name: localstack
+    #restart: unless-stopped
+    #environment:
+     # - SERVICES=sqs,sns
+     #- AWS_ACCESS_KEY_ID=test
+     #- AWS_SECRET_ACCESS_KEY=test
+    #ports:
+     # - 4566:4566
+    #volumes:
+     # - localstack_data:/var/lib/localstack
+#volumes:
+  #postgres_data:
+  #localstack_data:
 
