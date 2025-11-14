@@ -49,7 +49,7 @@ jobs:
 
     - name: Build and push all Docker images
       env:
-        REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        AWS_ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         REPOSITORY: abdulazizibm/ecr
       run: |
         SERVICES="gateway-service user-communication-service product-service cart-service order-service payment-service"
