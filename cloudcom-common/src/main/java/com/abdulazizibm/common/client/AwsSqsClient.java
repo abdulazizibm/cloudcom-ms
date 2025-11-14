@@ -12,10 +12,10 @@ import software.amazon.awssdk.services.sqs.SqsClient;
 
 @Configuration
 public class AwsSqsClient {
+  private final String endpoint = System.getenv().getOrDefault("AWS_ENDPOINT", " ");
 
   @Bean
-  public SqsClient sqsClient(@Value("${aws.region}") String region,
-      @Value("${aws.endpoint}") String endpoint) {
+  public SqsClient sqsClient(@Value("${aws.region}") String region) {
     var builder = SqsClient.builder()
         .region(Region.of(region));
 

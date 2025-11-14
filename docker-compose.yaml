@@ -1,7 +1,7 @@
 services:
   gateway-service:
     build: ./spring-gateway
-    image: ${REGISTRY}/${REPOSITORY}:gateway-service-image
+    image: ${AWS_ECR_REGISTRY}/${REPOSITORY}:gateway-service-image
     #image: gateway-service-image
     container_name: gateway-service
     restart: unless-stopped
@@ -16,7 +16,7 @@ services:
 
   user-communication-service:
     build: ./spring-microservices/user-communication-service
-    image: ${REGISTRY}/${REPOSITORY}:user-com-service-image
+    image: ${AWS_ECR_REGISTRY}/${REPOSITORY}:user-com-service-image
     #image: user-com-service-image
     container_name: user-communication-service
     restart: unless-stopped
@@ -30,7 +30,7 @@ services:
 
   product-service:
     build: ./spring-microservices/product-service
-    image: ${REGISTRY}/${REPOSITORY}:product-service-image
+    image: ${AWS_ECR_REGISTRY}/${REPOSITORY}:product-service-image
     #image: product-service-image
     container_name: product-service
     restart: unless-stopped
@@ -43,7 +43,7 @@ services:
       - 8082
   cart-service:
     build: ./spring-microservices/cart-service
-    image: ${REGISTRY}/${REPOSITORY}:cart-service-image
+    image: ${AWS_ECR_REGISTRY}/${REPOSITORY}:cart-service-image
     #image: cart-service-image
     container_name: cart-service
     restart: unless-stopped
@@ -57,7 +57,7 @@ services:
       - 8083
   order-service:
     build: ./spring-microservices/order-service
-    image: ${REGISTRY}/${REPOSITORY}:order-service-image
+    image: ${AWS_ECR_REGISTRY}/${REPOSITORY}:order-service-image
     #image: order-service-image
     container_name: order-service
     restart: unless-stopped
@@ -70,7 +70,7 @@ services:
       - 8084
   payment-service:
     build: ./spring-microservices/payment-service
-    image: ${REGISTRY}/${REPOSITORY}:payment-service-image
+    image: ${AWS_ECR_REGISTRY}/${REPOSITORY}:payment-service-image
     #image: payment-service-image
     container_name: payment-service
     restart: unless-stopped
