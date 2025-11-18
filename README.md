@@ -24,6 +24,7 @@ The application models a realistic backend for an online shop, with services for
 ## Tech Stack
 ### Backend
 - Java 21
+- Maven
 - Spring Boot 3
 - Spring Security (JWT Authentication)
 - Spring Data JPA
@@ -64,7 +65,7 @@ Handles:
 - User Notification 
 
 Creates a user in the database. Consumes event
-```PaymentDoneMessage``` and notifies a customer about successful order
+```PaymentDoneMessage``` and notifies a customer about successful order,
 
 ### product-service
 Handles:
