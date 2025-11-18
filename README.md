@@ -1,9 +1,8 @@
 # Cloud-native E-Commerce Microservices System
 
-CloudCom is a cloud-native e-commerce backend built with Spring Boot, Docker, and AWS, following a clean microservices architecture.
-It features secure JWT-based authentication, asynchronous communication with Amazon SQS, and full CI/CD automation using GitHub Actions.
-The system simulates a real-world backend for a scalable online shop — including user management, product catalog, shopping cart, order processing, and notification services.
-Although originally developed as a learning project to explore AWS, GitHub Actions, containerized microservices, and event-driven design, it follows production-grade principles and patterns throughout.
+CloudCom is a cloud-native e-commerce backend built with Spring Boot, Docker, and AWS, structured around a clean microservices architecture. It includes secure JWT authentication, asynchronous messaging with Amazon SQS, and a full CI/CD setup powered by GitHub Actions.
+
+The application models a realistic backend for an online shop, with services for user management, product catalog, shopping carts, orders, and notifications. While the project started as a way for me to learn AWS, GitHub Actions, containerized microservices, and event-driven communication, it was built using production-ready patterns and best practices from the start.
 # Table of Contents
 <!-- TOC -->
 * [Tech Stack](#tech-stack)
